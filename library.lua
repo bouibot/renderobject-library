@@ -171,6 +171,11 @@ do
 
         combo.frame = combo_frame
 
+        function combo.refresh(self, items)
+            self.frame.Items = items
+            self.frame.SelectedItem = 1
+        end
+
         function combo.get(self)
             return self.frame.SelectedItem
         end
