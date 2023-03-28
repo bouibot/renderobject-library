@@ -522,10 +522,6 @@ function library.window(self, info)
         self.frame:Remove()
     end
 
-    function window.rename(self, name)
-        self.frame:Emplace(name)
-    end
-
     self:connect(uis.InputBegan, function(input)
         if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == toggleKey then
             window:toggle()
