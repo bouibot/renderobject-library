@@ -14,6 +14,10 @@ local library = {
     active = false
 }
 
+local theme_thingies = {
+    accent = {18, 19, 20, 22, 23, 25, 34, 35}
+}
+
 local entriesMetatable = {}
 entriesMetatable.__index = entriesMetatable
 
@@ -520,6 +524,18 @@ function library.window(self, info)
         library.active = false
 
         self.frame:Remove()
+    end
+
+    function window.change_theme(self, new_theme)
+
+        for thingName, thingValue in pairs(new_theme) do
+            if theme_thingies[thingName] then
+                for _, enumIndex in pairs(theme_thingies[thingName]) do
+                    self.frame:SetColor(enumIndex, thingValue, 1)
+                end
+            end
+        end
+
     end
 
     self:connect(uis.InputBegan, function(input)
