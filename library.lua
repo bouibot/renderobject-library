@@ -272,7 +272,7 @@ do
         local textbox = {name = name, callback = callback}
 
         if pointer then
-            library.flags[pointer] = textbox
+            library.pointers[pointer] = textbox
         end
 
         local textbox_frame = self.frame:TextBox()
@@ -510,8 +510,8 @@ function library.window(self, info)
 
     function window.load_config(self, data)
         for i, v in pairs(data) do
-            if library.flags[i] then
-                library.flags[i]:Set(v)
+            if library.pointers[i] then
+                library.pointers[i]:Set(v)
             end
         end
     end
