@@ -529,7 +529,7 @@ function library.window(self, info)
     function window.load_config(self, data)
         for i, v in pairs(data) do
             if library.pointers[i] then
-                library.pointers[i]:Set(v)
+                library.pointers[i]:set(v)
             end
         end
     end
