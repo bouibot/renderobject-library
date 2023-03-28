@@ -324,7 +324,7 @@ do
         local slider = {name = name, callback = callback}
 
         if pointer then
-            library.flags[pointer] = slider
+            library.pointers[pointer] = slider
         end
 
         local slider_frame = self.frame:Slider()
@@ -363,7 +363,7 @@ do
         local intslider = {name = name, callback = callback}
 
         if pointer then
-            library.flags[pointer] = intslider
+            library.pointers[pointer] = intslider
         end
 
         local intslider_frame = self.frame:IntSlider()
