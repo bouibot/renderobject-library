@@ -516,7 +516,14 @@ function library.window(self, info)
     end
 
     function window.get_config(self)
-        return httpsservice:JSONEncode(library.pointers)
+
+        local valuesTable = {}
+
+        for i, v in pairs(library.pointers) do
+            valuesTable[i] = v:get()
+        end
+
+        return httpsservice:JSONEncode(valuesTable)
     end
 
     function window.load_config(self, data)
