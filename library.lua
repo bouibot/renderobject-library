@@ -125,6 +125,8 @@ do
         cp_frame.UseAlpha = useAlpha
         cp_frame.Alpha = alpha
 
+        cp_frame.OnUpdated:Connect(colorpicker.callback)
+
         colorpicker.frame = cp_frame
 
         function colorpicker.get(self)
