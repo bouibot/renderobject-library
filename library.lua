@@ -15,7 +15,7 @@ local library = {
 }
 
 local theme_thingies = {
-    accent = {18, 19, 20, 22, 23, 25, 34, 35}
+    accent = {5, 6, 18, 19, 20, 22, 23, 25, 34, 35}
 }
 
 local entriesMetatable = {}
@@ -130,7 +130,7 @@ do
         colorpicker.frame = cp_frame
 
         function colorpicker.get(self)
-            return self.frame.UseAlpha and {{self.frame.Color:ToHSV()}, self.frame.Alpha} or {{self.frame.Color:ToHSV()}}
+            return self.frame.UseAlpha and {self.frame.Color, self.frame.Alpha} or {self.frame.Color}
         end
 
         function colorpicker.set(self, value)
@@ -519,7 +519,13 @@ function library.window(self, info)
         local valuesTable = {}
 
         for i, v in pairs(library.pointers) do
-            valuesTable[i] = v:get()
+            local value = v:get()
+
+            if typeof(value) == "table" and typeof(value[1]) == "Color3" then
+                value = {{value[1]:ToHSV()}, value[2]}
+            end
+
+            valuesTable[i] = value
         end
 
         return httpsservice:JSONEncode(valuesTable)
