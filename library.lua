@@ -130,15 +130,14 @@ do
         colorpicker.frame = cp_frame
 
         function colorpicker.get(self)
-            return self.frame.useAlpha and {self.frame.Color, self.frame.Alpha} or self.frame.Color
+            return self.frame.UseAlpha and {{self.frame.Color:ToHSV()}, self.frame.Alpha} or {{self.frame.Color:ToHSV()}}
         end
 
         function colorpicker.set(self, value)
+            self.frame.Color = c3hsv(unpack(value[1]))
+
             if self.frame.UseAlpha then
-                self.frame.Color = value[1]
                 self.frame.Alpha = value[2]
-            else
-                self.frame.Color = value
             end
         end
 
