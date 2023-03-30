@@ -96,6 +96,8 @@ do
 
         function checkbox.set(self, value)
             self.frame.Value = value
+
+            callback(value)
         end
 
         return checkbox
@@ -139,6 +141,8 @@ do
             if self.frame.UseAlpha then
                 self.frame.Alpha = value[2]
             end
+
+            callback(self.frame.Color)
         end
 
         return colorpicker
@@ -181,6 +185,8 @@ do
 
         function combo.set(self, value)
             self.frame.SelectedItem = value
+
+            callback(self.frame.SelectedItem)
         end
 
         return combo
@@ -222,6 +228,8 @@ do
 
         function drag.set(self, value)
             self.frame.Value = value
+
+            callback(self.frame.Value)
         end
 
         return drag
@@ -263,6 +271,8 @@ do
 
         function intdrag.set(self, value)
             self.frame.Value = value
+
+            callback(self.frame.Value)
         end
 
         return intdrag
@@ -300,6 +310,8 @@ do
 
         function textbox.set(self, value)
             self.frame.Value = value
+
+            callback(self.frame.Value)
         end
 
         return textbox
@@ -353,6 +365,8 @@ do
 
         function slider.set(self, value)
             self.frame.Value = value
+
+            callback(self.frame.Value)
         end
 
         return slider
@@ -392,6 +406,8 @@ do
 
         function intslider.set(self, value)
             self.frame.Value = value
+
+            callback(self.frame.Value)
         end
 
         return intslider
@@ -431,6 +447,8 @@ do
 
         function selectable.set(self, value)
             self.frame.Value = value
+
+            callback(self.frame.Value)
         end
 
         return selectable
