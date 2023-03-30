@@ -542,6 +542,10 @@ function library.window(self, info)
     function window.unload(self)
         library.active = false
 
+        for _, connection in next, library.cons do
+            connection:Disconnect()
+        end
+
         self.frame:Remove()
     end
 
