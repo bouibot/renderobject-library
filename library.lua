@@ -444,7 +444,7 @@ do
         popup:button({name = "start binding", callback = function() keybind.binding = true end})
         popup:button({name = "reset keybind", callback = function() keybind.value = Enum.KeyCode.Unknown keybind.frame.Value = keybind.value.Name keybind.callback(keybind.value.Name) end})
         popup:separator()
-        popup:combo({name = "mode", items = {"toggle", "hold"}, def = keybind.mode == "toggle" and 1 or 2, callback = function(n) keybind.mode = n == 1 and "toggle" or "hold" end})
+        local popup_combo = popup:combo({name = "mode", items = {"toggle", "hold"}, def = keybind.mode == "toggle" and 1 or 2, callback = function(n) keybind.mode = n == 1 and "toggle" or "hold" end})
 
         keybind_frame.OnUpdated:Connect(function()
             
@@ -473,7 +473,7 @@ do
             for _, method in next, {"UserInputType", "KeyCode"} do
 
                 for _, item in next, Enum[method]:GetEnumItems() do
-                    if item.Name == value then
+                    if item.Name == value[1] then
                         enumValue = item
                         break
                     end
@@ -487,6 +487,9 @@ do
 
             self.value = enumValue
             self.frame.Value = self.value.Name
+            self.mode = value[2]
+            
+            popup_combo:set(self.mode == "toggle" and 1 or 2)
 
             callback(self.value.Name)
 
@@ -498,9 +501,9 @@ do
             if keybind.binding then
 
                 if input.UserInputType ~= Enum.UserInputType.Keyboard then
-                    keybind:set(input.UserInputType.Name)
+                    keybind:set({input.UserInputType.Name, keybind.mode})
                 else
-                    keybind:set(input.KeyCode.Name)
+                    keybind:set({input.KeyCode.Name, keybind.mode})
                 end
 
                 keybind.binding = false
@@ -516,8 +519,6 @@ do
                 elseif input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == keybind.value then
 
                     keybind.active = activeValue
-
-                    print(activeValue)
 
                 end
 
