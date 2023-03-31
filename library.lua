@@ -184,7 +184,7 @@ do
         end
 
         function combo.get(self)
-            return self.Items[self.frame.SelectedItem]
+            return self.frame.Items[self.frame.SelectedItem]
         end
 
         function combo.set(self, value)
