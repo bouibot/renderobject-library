@@ -159,6 +159,10 @@ do
         local pointer = info.pointer
         local callback = info.callback or function() end
 
+        if typeof(def) == "string" then
+            def = table.find(items, def)
+        end
+
         local combo = {name = name, callback = callback}
 
         if pointer then
@@ -180,13 +184,21 @@ do
         end
 
         function combo.get(self)
-            return self.frame.SelectedItem
+            return self.Items[self.frame.SelectedItem]
         end
 
         function combo.set(self, value)
-            self.frame.SelectedItem = value
+            local selectedItem
 
-            callback(self.frame.SelectedItem)
+            for index, newValue in next, self.frame.Items do
+                if newValue == value then
+                    selectedItem = index
+                end
+            end
+
+            self.frame.SelectedItem = selectedItem
+
+            callback(value)
         end
 
         return combo
@@ -444,7 +456,7 @@ do
         popup:button({name = "start binding", callback = function() keybind.binding = true end})
         popup:button({name = "reset keybind", callback = function() keybind.value = Enum.KeyCode.Unknown keybind.frame.Value = keybind.value.Name keybind.callback(keybind.value.Name) end})
         popup:separator()
-        local popup_combo = popup:combo({name = "mode", items = {"toggle", "hold"}, def = keybind.mode == "toggle" and 1 or 2, callback = function(n) keybind.mode = n == 1 and "toggle" or "hold" end})
+        local popup_combo = popup:combo({name = "mode", items = {"toggle", "hold"}, def = keybind.mode, callback = function(n) keybind.mode = n == 1 and "toggle" or "hold" end})
 
         keybind_frame.OnUpdated:Connect(function()
             
@@ -489,7 +501,7 @@ do
             self.frame.Value = self.value.Name
             self.mode = value[2]
             
-            popup_combo:set(self.mode == "toggle" and 1 or 2)
+            popup_combo:set(self.mode)
 
             callback(self.value.Name)
 
@@ -742,4 +754,7 @@ function library.window(self, info)
 
 end
 
-return library
+local test = library:window({name="test"})
+local tab=test:tab({name="asd"})
+tab:keybind()
+--return library
