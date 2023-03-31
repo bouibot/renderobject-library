@@ -754,7 +754,4 @@ function library.window(self, info)
 
 end
 
-local test = library:window({name="test"})
-local tab=test:tab({name="asd"})
-tab:keybind()
---return library
+return library
