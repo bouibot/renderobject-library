@@ -30,6 +30,10 @@ do
         local name = info.name or "button"
         local callback = info.callback or function() end
 
+        if self.window.nameOverwrite then
+            name = self.window.nameOverwrite
+        end
+
         local button = {name = name, callback = callback}
 
         local button_frame = self.frame:Button()
@@ -51,6 +55,10 @@ do
         local size = info.size or v2zero
         local color = info.color or c3new()
         local callback = info.callback or function() end
+
+        if self.window.nameOverwrite then
+            name = self.window.nameOverwrite
+        end
 
         local colorbutton = {description = description, callback = callback}
 
@@ -75,6 +83,10 @@ do
         local def = info.def or info.default or false
         local pointer = info.pointer
         local callback = info.callback or function() end
+
+        if self.window.nameOverwrite then
+            name = self.window.nameOverwrite
+        end
 
         local checkbox = {name = name, callback = callback}
 
@@ -114,6 +126,10 @@ do
         local useAlpha = info.useAlpha or false
         local pointer = info.pointer
         local callback = info.callback or function() end
+
+        if self.window.nameOverwrite then
+            name = self.window.nameOverwrite
+        end
 
         local colorpicker = {name = name, callback = callback}
 
@@ -158,6 +174,10 @@ do
         local def = info.def or info.default or 1
         local pointer = info.pointer
         local callback = info.callback or function() end
+
+        if self.window.nameOverwrite then
+            name = self.window.nameOverwrite
+        end
 
         if typeof(def) == "string" then
             def = table.find(items, def)
@@ -217,6 +237,10 @@ do
         local pointer = info.pointer
         local callback = info.callback or function() end
 
+        if self.window.nameOverwrite then
+            name = self.window.nameOverwrite
+        end
+
         local drag = {name = name, callback = callback}
 
         if pointer then
@@ -260,6 +284,10 @@ do
         local pointer = info.pointer
         local callback = info.callback or function() end
 
+        if self.window.nameOverwrite then
+            name = self.window.nameOverwrite
+        end
+
         local intdrag = {name = name, callback = callback}
 
         if pointer then
@@ -300,6 +328,10 @@ do
         local def = info.def or info.default or "text"
         local pointer = info.pointer
         local callback = info.callback or function() end
+
+        if self.window.nameOverwrite then
+            name = self.window.nameOverwrite
+        end
 
         local textbox = {name = name, callback = callback}
 
@@ -355,6 +387,10 @@ do
         local pointer = info.pointer
         local callback = info.callback or function() end
 
+        if self.window.nameOverwrite then
+            name = self.window.nameOverwrite
+        end
+
         local slider = {name = name, callback = callback}
 
         if pointer then
@@ -396,6 +432,10 @@ do
         local pointer = info.pointer
         local callback = info.callback or function() end
 
+        if self.window.nameOverwrite then
+            name = self.window.nameOverwrite
+        end
+
         local intslider = {name = name, callback = callback}
 
         if pointer then
@@ -435,6 +475,10 @@ do
         local def = info.def or info.default or "Unknown"
         local pointer = info.pointer
         local callback = info.callback or function() end
+
+        if self.window.nameOverwrite then
+            name = self.window.nameOverwrite
+        end
 
         if typeof(def) == "string" then
             def = Enum.KeyCode[def]
@@ -568,6 +612,10 @@ do
         local pointer = info.pointer
         local callback = info.callback or function() end
 
+        if self.window.nameOverwrite then
+            name = self.window.nameOverwrite
+        end
+
         local selectable = {name = name, callback = callback}
 
         if pointer then
@@ -604,6 +652,10 @@ do
 
         local name = info.name or "collapsable"
         local open = info.open or false
+
+        if self.window.nameOverwrite then
+            name = self.window.nameOverwrite
+        end
         
         local collapsable = {name = name, open = open, window = self.window}
 
@@ -680,6 +732,10 @@ function library.window(self, info)
         info = info or {}
 
         local name = info.name or ("tab #%s"):format(tostring(#self.tabs))
+
+        if self.nameOverwrite then
+            name = self.nameOverwrite
+        end
 
         local tab = {name = name, window = self}
 
