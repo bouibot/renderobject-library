@@ -471,7 +471,7 @@ do
         end)
 
         function keybind.get(self)
-            return keybind.value.Name
+            return {self.value.Name, self.mode}
         end
 
         function keybind.isActive(self)
