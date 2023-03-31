@@ -734,7 +734,7 @@ function library.window(self, info)
         local name = info.name or ("tab #%s"):format(tostring(#self.tabs))
 
         if self.nameOverwrite then
-            name = self.nameOverwrite
+            name = ("%s %s"):format(tostring(self.nameOverwrite), tostring(#self.tabs))
         end
 
         local tab = {name = name, window = self}
