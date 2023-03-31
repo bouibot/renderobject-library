@@ -672,7 +672,7 @@ do
 
     function entriesMetatable.popup(self)
 
-        local popup = {}
+        local popup = {window = self.window}
 
         local popup_frame = self.window.frame:Popup()
 
