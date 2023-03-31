@@ -414,6 +414,136 @@ do
 
     end
 
+    function entriesMetatable.keybind(self, info)
+
+        info = info or {}
+
+        local name = info.name or "keybind"
+        local mode = info.mode or "toggle"
+        local def = info.def or info.default or "Unknown"
+        local pointer = info.pointer
+        local callback = info.callback or function() end
+
+        if typeof(def) == "string" then
+            def = Enum.KeyCode[def]
+        end
+
+        local keybind = {name = name, binding = false, active = false, value = def, mode = mode:lower(), callback = callback}
+
+        if pointer then
+            library.pointers[pointer] = keybind
+        end
+
+        local keybind_frame = self.frame:TextBox()
+        keybind_frame.Label = keybind.name
+        keybind_frame.Value = keybind.value.Name
+
+        keybind.frame = keybind_frame
+
+        local popup = entriesMetatable.popup({window = self.window})
+        popup:button({name = "start binding", callback = function() keybind.binding = true end})
+        popup:button({name = "reset keybind", callback = function() keybind.value = Enum.KeyCode.Unknown keybind.frame.Value = keybind.value.Name keybind.callback(keybind.value.Name) end})
+        popup:separator()
+        popup:combo({name = "mode", items = {"toggle", "hold"}, def = keybind.mode == "toggle" and 1 or 2, callback = function(n) keybind.mode = n == 1 and "toggle" or "hold" end})
+
+        keybind_frame.OnUpdated:Connect(function()
+            
+            if keybind_frame.Value ~= keybind.value.Name then
+
+                keybind_frame.Value = keybind.value.Name
+
+            end
+
+            popup:show()
+
+        end)
+
+        function keybind.get(self)
+            return keybind.value.Name
+        end
+
+        function keybind.isActive(self)
+            return self.active
+        end
+
+        function keybind.set(self, value)
+
+            local enumValue
+
+            for _, method in next, {"UserInputType", "KeyCode"} do
+
+                for _, item in next, Enum[method]:GetEnumItems() do
+                    if item.Name == value then
+                        enumValue = item
+                        break
+                    end
+                end
+
+                if enumValue then
+                    break
+                end
+
+            end
+
+            self.value = enumValue
+            self.frame.Value = self.value.Name
+
+            callback(self.value.Name)
+
+        end
+
+        -- // yeah i thought i could make it thru library but then boom i know that i need so it toggles/other shit
+
+        library:connect(uis.InputBegan, function(input)
+            if keybind.binding then
+
+                if input.UserInputType ~= Enum.UserInputType.Keyboard then
+                    keybind:set(input.UserInputType.Name)
+                else
+                    keybind:set(input.KeyCode.Name)
+                end
+
+                keybind.binding = false
+
+            else
+
+                local activeValue = keybind.mode == "toggle" and not keybind.active or keybind.mode == "hold"
+
+                if input.UserInputType == keybind.value then
+
+                    keybind.active = activeValue
+
+                elseif input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == keybind.value then
+
+                    keybind.active = activeValue
+
+                    print(activeValue)
+
+                end
+
+            end
+        end)
+
+        library:connect(uis.InputEnded, function(input)
+            if keybind.mode == "hold" and keybind.active then
+
+                if input.UserInputType == keybind.value then
+
+                    keybind.active = false
+
+                elseif input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == keybind.value then
+
+                    keybind.active = false
+
+                end
+
+            end
+        end)
+
+        return keybind
+
+    end
+
     function entriesMetatable.selectable(self, info)
 
         info = info or {}
@@ -475,6 +605,24 @@ do
 
     end
 
+    function entriesMetatable.popup(self)
+
+        local popup = {}
+
+        local popup_frame = self.window.frame:Popup()
+
+        popup.frame = popup_frame
+
+        function popup.show(self)
+            self.frame:Show()
+        end
+
+        setmetatable(popup, entriesMetatable)
+
+        return popup
+
+    end
+
 end
 
 function library.connect(self, con, call)
@@ -520,7 +668,7 @@ function library.window(self, info)
 
         local name = info.name or ("tab #%s"):format(tostring(#self.tabs))
 
-        local tab = {name = name}
+        local tab = {name = name, window = self}
 
         local tab_frame = self.tabmenu:Add(name)
 
