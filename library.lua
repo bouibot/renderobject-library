@@ -593,7 +593,7 @@ do
         local name = info.name or "collapsable"
         local open = info.open or false
         
-        local collapsable = {name = name, open = open}
+        local collapsable = {name = name, open = open, window = self.window}
 
         local collapsable_frame = self.frame:Collapsable(collapsable.name, collapsable.open)
         --collapsable_frame.Head
